@@ -1,0 +1,63 @@
+name: check assignment
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+    branches:
+      - '*'
+
+jobs:
+  check-assignment:
+    runs-on: ubuntu-latest
+    container: rocker/geospatial:4.3.2
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Install system dependencies
+        run: |
+          apt-get update && apt-get install -y --no-install-recommends \
+          git-crypt libxt6 libglpk-dev
+        
+      - name: Install R packages
+        run: |
+          install.packages(c("rmarkdown", "openxlsx", "stringr"))
+        shell: Rscript {0}
+        
+      - name: Check that R file/s exist/s
+        run: |
+          testthat::test_that("R file exists",
+            testthat::expect_true(
+              length(list.files(pattern = "\\.R$|\\.r$")) > 0
+            )
+          )
+        shell: Rscript {0}
+      
+      - name: Check that R file runs without errors
+        run: |
+          lapply(
+            X = list.files(pattern = "\\.R$|\\.r$"),
+            FUN = source
+          )
+        shell: Rscript {0}
+          
+      - name: Check that Rmd file runs without errors
+        run: |
+          rmds <- list.files(pattern = "\\.Rmd$") |>
+            (\(x) x[!stringr::str_detect(string = x, pattern = "README")])()
+          if (length(rmds) != 0) {
+            lapply(
+              X = rmds,
+              FUN = rmarkdown::render
+            )
+          }
+        shell: Rscript {0}
+        
+      - name: Upload Rmarkdown reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: rmd-output
+          path: ./*.html
+          
