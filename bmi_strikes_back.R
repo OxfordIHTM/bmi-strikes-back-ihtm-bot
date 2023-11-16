@@ -14,7 +14,7 @@ library(openxlsx)              ## for reading Excel files (XLS/XLSX)
 nut_data <- read.table(file = "data/school_nutrition.csv", header = TRUE, sep = ",")
 
 ### use header = FALSE (default) ----
-nut_data <- read.table(file = "data/school_nutrition.csv", sep = ",")
+nut_data_x <- read.table(file = "data/school_nutrition.csv", sep = ",")
 
 ### use read.csv() function ----
 nut_data_m <- read.csv(file = "data/school_nutrition.csv") 
