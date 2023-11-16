@@ -51,8 +51,8 @@ nut_data$height
 nut_data[ , "weight"]
 nut_data[ , "height"]
 
-nut_data[ , 5]  ## This gives me the same result as line 46
-nut_data[ , 6]  ## This gives me the same result as line 47
+nut_data[ , 5]  ## This gives me the same result as line 47 and 51
+nut_data[ , 6]  ## This gives me the same result as line 48 and 52
 
 ### These next two lines gives me the values for weight and height but the type 
 ### of results is of different structure than in line 46 and 47. The result is
