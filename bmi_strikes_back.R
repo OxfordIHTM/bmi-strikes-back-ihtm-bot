@@ -49,7 +49,7 @@ nut_data$height
 
 ### Access the weight and height data in nut_data using the [] index operator ----
 nut_data[ , "weight"]
-nut_data[ , "height"]
+nut_data[ , "heigt"]
 
 nut_data[ , 5]  ## This gives me the same result as line 47 and 51
 nut_data[ , 6]  ## This gives me the same result as line 48 and 52
