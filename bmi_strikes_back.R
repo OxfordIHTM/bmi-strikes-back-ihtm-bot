@@ -65,8 +65,8 @@ nut_data["height"]
 nut_data[nut_data$sex == 2, 5] ## access weight of all female students in data
 nut_data[nut_data$sex == 1, 5] ## access weight of all male students in data
 
-nut_data[nut_data$sex == 2, "weight"] ## This gives same result as line 51
-nut_data[nut_data$sex == 1, weight] ## This gives same result as line 60
+nut_data[nut_data$sex == 2, "weight"]  ## gives me the same result as line 65
+nut_data[nut_data$sex == 1, "weight"]  ## gives me the same result as line 66
 
 
 ## Summarising weight and height values in the dataset numerically ----
