@@ -55,7 +55,7 @@ nut_data[ , 5]  ## This gives me the same result as line 47 and 51
 nut_data[ , 6]  ## This gives me the same result as line 48 and 52
 
 ### These next two lines gives me the values for weight and height but the type 
-### of results is of different structure than in line 46 and 47. The result is
+### of results is of different structure than in line 47 and 48. The result is
 ### still a data.frame compared to lines 46 and 47 which gives me vectors
 nut_data["weight"] 
 nut_data["height"]
@@ -386,7 +386,101 @@ par(mfcol = c(1, 1))
 title(main = "Q-Q plot of weight by sex", xlab = "Theoretical Quantiles")
 
 
+## Using external package/s to perform exploratory data analysis ----
 
+## For this, I made sure that I have installed dplyr by running
+## install.packages("dplyr") and then adding a dependency to the dplyr
+## package at the start of my script (see line 7 above).
 
+### Using dplyr package to get the five number summary of weight and height ----
 
+summarise(nut_data, 
+          min_weight = min(weight),                    ## Calculate the minimum weight of all children
+          q1_weight = quantile(weight, probs = 1/4),   ## Calculate the first quantile weight of all children
+          median_weight = median(weight),              ## Calculate the median weight of all children
+          mean_weight = mean(weight),                  ## Calculate the mean weight of all children
+          q3_weight = quantile(weight, probs = 3/4),   ## Calculate the third quantile weight of all children
+          max_weight = max(weight),                    ## Calculate the maximum weight of all children
+          min_height = min(height),                    ## Calculate the minimum height of all children
+          q1_height = quantile(height, probs = 1/4),   ## Calculate the first quantile height of all children
+          median_height = median(height),              ## Calculate the median height of all children
+          mean_height = mean(height),                  ## Calculate the mean height of all children
+          q3_height = quantile(height, probs = 3/4),   ## Calculate the third quantile height of all children
+          max_height = max(height))                    ## Calculate the maximum height of all children
+
+## Using the summarise() or the summarize() function in dplyr package, the above
+## code shows how to get to the same five number summary provided by the
+## base summary() function
+## 
+## I see here that whilst I have to do a lot more typing of code, the power of
+## the summarise() function in dplyr is that I can use it to get different
+## kinds of summaries other than the five number summary that are useful in
+## exploratry data analysis
+
+### Using dplyr to count the number of school children for each kind of grouping ----
+
+nut_data %>%                          ## Here I use the pipe operator %>% available through dplyr
+  group_by(region, school, sex) %>%   ## I use the group_by() function in dplyr to group my data for region, school, and sex
+  summarise(n_children = n()) %>%     ## I then use the summarise() and count the number of records per grouping using the n() function
+  print(n = 55)                       ## This is not necessary but it just allows for the complete table to be shown on the console   
+
+## In the above code, I use the dplyr pipe operator %>%. This pipe operator
+## works in such a way that it brings the output of one line of code as the
+## first parameter/argument in the next line of code hence the name pipe
+##
+## So in line 418, I pipe the nut_data object into the group_by() function
+## which requires a data.frame as its first argument. Then I specify the other
+## arguments required by group_by() function and then I pipe the result of this
+## to the summarise() function which also requires a data.frame as its first
+## argument. I then add the arguments needed to make the summary.
+##
+## dplyr functions are built to be pipe-friendly particularly using the %>%
+## pipe operator. Note that not all functions that are not dplyr functions
+## can be used with the pipe operator. The best way to ascertain that a non-dplyr
+## function will work with the pipe is if its first argument is the output
+## produced by the earlier line of code. If not, it is likely that you will
+## need extra steps to make the pipe work or that it will not work at all. For
+## these cases, then non-pipe workflows would make more sense.
+
+### Using dplyr to get five number summary of weight and height by sex ----
+nut_data %>%
+  group_by(sex) %>%
+  summarise(min_weight = min(weight),                    
+            q1_weight = quantile(weight, probs = 1/4),   
+            median_weight = median(weight),              
+            mean_weight = mean(weight),                  
+            q3_weight = quantile(weight, probs = 3/4),   
+            max_weight = max(weight),                    
+            min_height = min(height),                    
+            q1_height = quantile(height, probs = 1/4),   
+            median_height = median(height),              
+            mean_height = mean(height),                  
+            q3_height = quantile(height, probs = 3/4),   
+            max_height = max(height))                      
+
+## Whilst this code takes longer to type compared to just doing
+## with(nut_data, by(weight, sex, summary)), it gives me an output that is
+## already in a rectangle format which is easily usable for reports and
+## documents. This is particularly good when you have to summarise on more
+## groupings than just 2 such as for the schools
+
+### Using dplyr to get five number summary of weight and height by school ----
+nut_data %>%
+  group_by(school) %>%
+  summarise(min_weight = min(weight),                    
+            q1_weight = quantile(weight, probs = 1/4),   
+            median_weight = median(weight),              
+            mean_weight = mean(weight),                  
+            q3_weight = quantile(weight, probs = 3/4),   
+            max_weight = max(weight),                    
+            min_height = min(height),                    
+            q1_height = quantile(height, probs = 1/4),   
+            median_height = median(height),              
+            mean_height = mean(height),                  
+            q3_height = quantile(height, probs = 3/4),   
+            max_height = max(height))
+
+## There are 29 schools in the dataset and if I were to use
+## with(nut_data, by(weight, school, summary)) I get an output that is much
+## harder to use for reporting on a document
 
