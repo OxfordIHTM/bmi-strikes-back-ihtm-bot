@@ -428,7 +428,7 @@ nut_data %>%                          ## Here I use the pipe operator %>% availa
 ## works in such a way that it brings the output of one line of code as the
 ## first parameter/argument in the next line of code hence the name pipe
 ##
-## So in line 418, I pipe the nut_data object into the group_by() function
+## So in line 422, I pipe the nut_data object into the group_by() function
 ## which requires a data.frame as its first argument. Then I specify the other
 ## arguments required by group_by() function and then I pipe the result of this
 ## to the summarise() function which also requires a data.frame as its first
